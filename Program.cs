@@ -1,13 +1,30 @@
-﻿using health_clinic.models;
+﻿using System.Data.Common;
+using health_clinic.models;
 
-var Patient1 = new Patient
+List<Patient> Patients = new List<Patient>();
+
+
+
+
+ void RegisterPatient ()
 {
-    Id = 1,
-    Name = "pedro",
-    Age = 5,
-    Symptoms = "moquillo"
+    Console.Clear();
+    Console.WriteLine("-[section of creating patient]-");
+    Console.WriteLine("");
 
-};
+    Console.WriteLine("write the ID number");
+    int id = int.Parse(Console.ReadLine()??"");
+
+    Console.WriteLine("write the patient's name");
+    string name = Console.ReadLine() ?? "";
+    Console.WriteLine("write the patient's name");
+    int age = int.Parse(Console.ReadLine() ?? "");
+    Console.WriteLine("write the patient's symptoms");
+    string symptoms = Console.ReadLine() ?? "";
+
+    Patient newPatient = new Patient(id,name, age, symptoms);
+    Patients.Add(newPatient);
+}
 
 
 static void MainMenu()
