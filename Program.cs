@@ -1,35 +1,46 @@
 ﻿using System.Data.Common;
+using System.Net;
 using health_clinic.models;
 
-List<Patient> Patients = new List<Patient>();
+ List<Patient> Patients = new List<Patient>();
 
 
 
 
- void RegisterPatient ()
+
+
+
+//-------------------------------------------------------------------------------------------
+
+    void ExitOrContinue()
 {
-    Console.Clear();
-    Console.WriteLine("-[section of creating patient]-");
-    Console.WriteLine("");
+    Console.WriteLine("Do you want to continue in section [1]?");
+    Console.WriteLine("Do you want to exit to the main menu [2]?");
 
-    Console.WriteLine("write the ID number");
-    int id = int.Parse(Console.ReadLine()??"");
+    string answer = Console.ReadLine() ?? "";
+    if (answer == "1")
+    {
+        return;
+    }
 
-    Console.WriteLine("write the patient's name");
-    string name = Console.ReadLine() ?? "";
-    Console.WriteLine("write the patient's name");
-    int age = int.Parse(Console.ReadLine() ?? "");
-    Console.WriteLine("write the patient's symptoms");
-    string symptoms = Console.ReadLine() ?? "";
+    else if (answer == "2")
+    {
+        MainMenu();
+    }
 
-    Patient newPatient = new Patient(id,name, age, symptoms);
-    Patients.Add(newPatient);
+    else
+    {
+        Console.WriteLine("wrong option");
+        ExitOrContinue();
+    }
+    
 }
 
+//-------------------------------------------------------------------------------------------
+void MainMenu()
+{  
+     while (true)
 
-static void MainMenu()
-{
-    while (true)
     {
         Console.WriteLine("----Welcome your Manager---");
         Console.WriteLine("Choose the corresponding option");
@@ -38,29 +49,29 @@ static void MainMenu()
         Console.WriteLine(" [3] Search Patient");
         Console.WriteLine(" [4] Exit");
 
-        string respuesta = Console.ReadLine() ?? "";
+        string answer = Console.ReadLine() ?? "";
 
-        switch (respuesta)
+       switch (answer)
         {
             case "1":
-                Console.WriteLine("aqui se agrega un paciente");
-                break;
+                RegisterPatient();  
+                break;  
             case "2":
-                Console.WriteLine("aqui se ve la lista de pacientes");
-                break;
+                Showpatient();  
+                break;  
             case "3":
                 Console.WriteLine("aqui se buscan los pacientes ");
                 break;
             case "4":
-                Console.WriteLine("aqui se sale");
-                break;
+                Console.WriteLine("Exiting...");
+                return;
             default:
                 Console.WriteLine("opcion erronea");
                 break;
         }
+
+       
     }
-
-
 }
 
 MainMenu();
