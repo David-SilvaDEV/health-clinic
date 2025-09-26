@@ -1,62 +1,75 @@
-
-namespace health_clinic.models;
-
-public class NewBaseType
+namespace health_clinic.models
 {
-    List<Patient> Patients = new List<Patient>();
-
-     void RegisterPatient()
+    public class PatientService
     {
-        Console.Clear();
-        Console.WriteLine("-[section of creating patient]-");
-        Console.WriteLine("");
+        private List<Patient> Patients = new List<Patient>();
 
-        Console.WriteLine("write the ID number");
-        int id = int.Parse(Console.ReadLine() ?? "");
-
-        Console.WriteLine("write the patient's name");
-        string name = Console.ReadLine() ?? "";
-        Console.WriteLine("write patient age");
-        int age = int.Parse(Console.ReadLine() ?? "");
-        Console.WriteLine("write the patient's symptoms");
-        string symptoms = Console.ReadLine() ?? "";
-
-        Patient newPatient = new Patient(id, name, age, symptoms);
-        Patients.Add(newPatient);
-
-        Console.WriteLine($"the patient {newPatient.Name} has been added successfully");
-   
-
-    }
-    void Showpatient()
-    {
-     Console.WriteLine("list of patient");
-     foreach (Patient patient in Patients)
-    {
-        Console.WriteLine($"{patient.Name}");
-    }
-
-    ExitOrContinue();
-    Showpatient();
-    }
-    
-    void ShowPatientsByName()
-    {    
-        
-        Console.WriteLine("type the name of the patient you want to search for:");
-        string answer = Console.ReadLine() ?? "";
-
-        foreach (var pat in Patients)
+        // Método para registrar pacientes
+        public void RegisterPatient()
         {
-            if (pat.Name == answer)
-            {
-                Console.WriteLine($"Name :{pat.Name} Id {pat.Id} Age :{pat.Age}");
-            }
-            
+            Console.Clear();
+            Console.WriteLine("-[section of creating patient]-");
+            Console.WriteLine("");
 
+            Console.WriteLine("Write the ID number:");
+            int id = int.Parse(Console.ReadLine() ?? "");
+
+            Console.WriteLine("Write the patient's name:");
+            string name = Console.ReadLine() ?? "";
+
+            int age = -1; // Inicializamos en un valor negativo para entrar en el ciclo
+
+            // Validación de la edad
+            while (age < 0)
+            {
+                try
+                {
+                    Console.WriteLine("Write patient age:");
+                    age = int.Parse(Console.ReadLine() ?? "");
+
+                    if (age < 0)
+                    {
+                        Console.WriteLine("Age must be a positive number. Please enter a valid age.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input! Please enter a valid number.");
+                }
+            }
+
+            Console.WriteLine("Write the patient's symptoms:");
+            string symptoms = Console.ReadLine() ?? "";
+
+            Patient newPatient = new Patient(id, name, age, symptoms);
+            Patients.Add(newPatient);
+
+            Console.WriteLine($"The patient {newPatient.Name} has been added successfully.");
         }
 
+        // Mostrar todos los pacientes
+        public void ShowPatients()
+        {
+            Console.WriteLine("List of patients:");
+            foreach (Patient patient in Patients)
+            {
+                Console.WriteLine($"{patient.Name}");
+            }
+        }
+
+        // Buscar pacientes por nombre
+        public void ShowPatientsByName()
+        {
+            Console.WriteLine("Type the name of the patient you want to search for:");
+            string answer = Console.ReadLine() ?? "";
+
+            foreach (var patient in Patients)
+            {
+                if (patient.Name.Equals(answer, StringComparison.OrdinalIgnoreCase)) // Comparación insensible a mayúsculas
+                {
+                    Console.WriteLine($"Name: {patient.Name} | ID: {patient.Id} | Age: {patient.Age} | Symptoms: {patient.Symptoms}");
+                }
+            }
+        }
     }
 }
-
-

@@ -1,77 +1,59 @@
-﻿using System.Data.Common;
-using System.Net;
-using health_clinic.models;
+﻿using System;
+using health_clinic.models; // Importar el namespace de los modelos
 
- List<Patient> Patients = new List<Patient>();
-
-
-
-
-
-
-
-//-------------------------------------------------------------------------------------------
-
-    void ExitOrContinue()
+class Program
 {
-    Console.WriteLine("Do you want to continue in section [1]?");
-    Console.WriteLine("Do you want to exit to the main menu [2]?");
-
-    string answer = Console.ReadLine() ?? "";
-    if (answer == "1")
-    {
-        return;
-    }
-
-    else if (answer == "2")
+    static void Main(string[] args)
     {
         MainMenu();
     }
 
-    else
+    static void MainMenu()
     {
-        Console.WriteLine("wrong option");
-        ExitOrContinue();
-    }
-    
-}
+        // Crear una instancia de PatientService
+        PatientService patientService = new PatientService();
 
-//-------------------------------------------------------------------------------------------
-void MainMenu()
-{  
-     while (true)
-
-    {
-        Console.WriteLine("----Welcome your Manager---");
-        Console.WriteLine("Choose the corresponding option");
-        Console.WriteLine(" [1] Register patient");
-        Console.WriteLine(" [2] Patient List");
-        Console.WriteLine(" [3] Search Patient");
-        Console.WriteLine(" [4] Exit");
-
-        string answer = Console.ReadLine() ?? "";
-
-       switch (answer)
+        while (true)
         {
-            case "1":
-                RegisterPatient();  
-                break;  
-            case "2":
-                Showpatient();  
-                break;  
-            case "3":
-                Console.WriteLine("aqui se buscan los pacientes ");
-                break;
-            case "4":
-                Console.WriteLine("Exiting...");
-                return;
-            default:
-                Console.WriteLine("opcion erronea");
-                break;
-        }
+            Console.Clear();
+            Console.WriteLine("---- Welcome to the Health Clinic Manager ----");
+            Console.WriteLine("Choose the corresponding option:");
+            Console.WriteLine("[1] Register Patient");
+            Console.WriteLine("[2] Patient List");
+            Console.WriteLine("[3] Search Patient");
+            Console.WriteLine("[4] Exit");
 
-       
+            string answer = Console.ReadLine() ?? "";
+
+            switch (answer)
+            {
+                case "1":
+                    // Llamar al método para registrar un paciente
+                    patientService.RegisterPatient();
+                    break;
+
+                case "2":
+                    // Mostrar lista de pacientes
+                    patientService.ShowPatients();
+                    break;
+
+                case "3":
+                    // Buscar paciente por nombre
+                    patientService.ShowPatientsByName();
+                    break;
+
+                case "4":
+                    // Salir del programa
+                    Console.WriteLine("Exiting...");
+                    return;
+
+                default:
+                    Console.WriteLine("Invalid option, please try again.");
+                    break;
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
     }
 }
-
-MainMenu();
