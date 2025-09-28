@@ -21,7 +21,10 @@ class Program
             Console.WriteLine("[1] Register Patient");
             Console.WriteLine("[2] Patient List");
             Console.WriteLine("[3] Search Patient");
-            Console.WriteLine("[4] Exit");
+            Console.WriteLine("[4] see patients with their pets");
+            Console.WriteLine("[5] Delete Patient");
+            Console.WriteLine("[6] Delete pet");
+            Console.WriteLine("[7] Exit");
 
             string answer = Console.ReadLine() ?? "";
 
@@ -43,6 +46,20 @@ class Program
                     break;
 
                 case "4":
+                    // ver pacientes con sus mascotas
+                    patientService.ShowPatientsAndPets();
+                    break;
+
+                case "5": 
+                    //Eliminar pacientes 
+                    patientService.DeletePatient(); 
+                    break;
+
+                case "6":
+                    //eliminar mascota
+                    patientService.DeletePet();
+                    break;
+                case "7":
                     // Salir del programa
                     Console.WriteLine("Exiting...");
                     return;

@@ -3,7 +3,7 @@ namespace health_clinic.models
     public class PatientService
     {
         private List<Patient> Patients = new List<Patient>();
-        private List<Patient> PatientsAndPets = new List<Patient>();
+        private List<Pet> Pets = new List<Pet>();
         // Método para registrar pacientes
         public void RegisterPatient()
         {
@@ -45,6 +45,7 @@ namespace health_clinic.models
             Patients.Add(newPatient);
 
             Console.WriteLine($"The patient {newPatient.Name} has been added successfully.");
+            RegisterPet();
         }
 
         // Mostrar todos los pacientes
@@ -74,16 +75,44 @@ namespace health_clinic.models
 
         public void ShowPatientsAndPets()
         {
+            if (!Patients.Any())
+            {
+                Console.WriteLine("No patients registered.");
+                return;
+            }
 
+            Console.WriteLine("=== Patients and their pets ===");
+
+            foreach (var patient in Patients)
+            {
+                Console.WriteLine($"Patient: {patient.Name} (ID: {patient.Id}, Age: {patient.Age})");
+                Console.WriteLine($"Symptoms: {patient.Symptoms}");
+
+                if (patient.Pets.Any())
+                {
+                    Console.WriteLine("Pets:");
+                    foreach (var pet in patient.Pets)
+                    {
+                        Console.WriteLine($" Name : - {pet.Name}");
+                        Console.WriteLine($" Type : - {pet.Type}");
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("   No pets registered.");
+                }
+
+                Console.WriteLine("----------------------------------");
+            }
         }
+
 
         public void RegisterPet()
         {
             Console.WriteLine("-[section of creating pet]-");
 
 
-            Console.WriteLine("Write the ID number:");
-            int id = int.Parse(Console.ReadLine() ?? "");
 
             Console.WriteLine("Write the pet name:");
             string name = Console.ReadLine() ?? "";
@@ -106,20 +135,75 @@ namespace health_clinic.models
                 return;
             }
 
-            // Guardamos solo el nombre en la lista de strings
-            patient.Pets.Add(name);
-
-
+            Pet newPet = new(name, type, age, idPatient);
+            Pets.Add(newPet);
+            patient.Pets.Add(newPet);
 
             // Pet NewPet = new Pet (id, name, age, type);
             // pets.Add(NewPet);
         }
 
 
+
+        public void DeletePatient()
+        {
+            Console.WriteLine("-[section Delete Patient ]-");
+            Console.WriteLine("");
+            Console.WriteLine("Enter the ID number of the patient you want to delete.");
+            int IdDelet = int.Parse(Console.ReadLine() ?? "");
+
+            Patient? patient = Patients.FirstOrDefault(p => p.Id == IdDelet);
+            if (patient == null)
+            {
+                Console.WriteLine("Patient not found!");
+                return;
+            }
+
+            else
+            {
+                Patients.Remove(patient);
+            }
+
+        }
+
+       public void DeletePet()
+{
+    Console.WriteLine("-[ Delete pet section ]-");
+
+    Console.WriteLine("Enter the ID of the patient to whom the pet belongs:");
+    int idPat = int.Parse(Console.ReadLine() ?? "");
+
+    Console.WriteLine("Write the name of the pet you want to delete:");
+    string namePet = Console.ReadLine() ?? "";
+
+    // Buscar al paciente
+    Patient? patient = Patients.FirstOrDefault(p => p.Id == idPat);
+    if (patient == null)
+    {
+        Console.WriteLine("❌ Patient not found!");
+        return;
     }
 
+    // Buscar la mascota dentro de ese paciente
+    Pet? pet = patient.Pets.FirstOrDefault(pe => 
+        pe.Name.Equals(namePet));
 
+    if (pet == null)
+    {
+        Console.WriteLine("❌ Pet not found!");
+        return;
+    }
 
+    // Eliminar de la lista del paciente
+    patient.Pets.Remove(pet);
 
+    // También la eliminamos de la lista global de mascotas
+    Pets.Remove(pet);
 
+    Console.WriteLine($"✅ The pet {pet.Name} was successfully removed from patient {patient.Name}.");
 }
+
+
+    }
+}
+      
