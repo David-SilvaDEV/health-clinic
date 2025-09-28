@@ -3,7 +3,7 @@ namespace health_clinic.models
     public class PatientService
     {
         private List<Patient> Patients = new List<Patient>();
-
+        private List<Patient> PatientsAndPets = new List<Patient>();
         // Método para registrar pacientes
         public void RegisterPatient()
         {
@@ -71,5 +71,55 @@ namespace health_clinic.models
                 }
             }
         }
+
+        public void ShowPatientsAndPets()
+        {
+
+        }
+
+        public void RegisterPet()
+        {
+            Console.WriteLine("-[section of creating pet]-");
+
+
+            Console.WriteLine("Write the ID number:");
+            int id = int.Parse(Console.ReadLine() ?? "");
+
+            Console.WriteLine("Write the pet name:");
+            string name = Console.ReadLine() ?? "";
+
+            Console.WriteLine("write the type of your pet");
+            string type = Console.ReadLine() ?? "";
+
+            Console.WriteLine("write your pet's age");
+            int age = int.Parse(Console.ReadLine() ?? "");
+
+            Console.WriteLine("Write the corresponding patient identification number.");
+            int idPatient = int.Parse(Console.ReadLine() ?? "");
+
+            // Buscar al paciente
+            Patient? patient = Patients.FirstOrDefault(p => p.Id == idPatient);
+
+            if (patient == null)
+            {
+                Console.WriteLine("Patient not found!");
+                return;
+            }
+
+            // Guardamos solo el nombre en la lista de strings
+            patient.Pets.Add(name);
+
+
+
+            // Pet NewPet = new Pet (id, name, age, type);
+            // pets.Add(NewPet);
+        }
+
+
     }
+
+
+
+
+
 }
