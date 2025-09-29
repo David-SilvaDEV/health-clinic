@@ -166,44 +166,72 @@ namespace health_clinic.models
 
         }
 
-       public void DeletePet()
-{
-    Console.WriteLine("-[ Delete pet section ]-");
+        public void DeletePet()
+        {
+            Console.WriteLine("-[ Delete pet section ]-");
 
-    Console.WriteLine("Enter the ID of the patient to whom the pet belongs:");
-    int idPat = int.Parse(Console.ReadLine() ?? "");
+            Console.WriteLine("Enter the ID of the patient to whom the pet belongs:");
+            int idPat = int.Parse(Console.ReadLine() ?? "");
 
-    Console.WriteLine("Write the name of the pet you want to delete:");
-    string namePet = Console.ReadLine() ?? "";
+            Console.WriteLine("Write the name of the pet you want to delete:");
+            string namePet = Console.ReadLine() ?? "";
 
-    // Buscar al paciente
-    Patient? patient = Patients.FirstOrDefault(p => p.Id == idPat);
-    if (patient == null)
-    {
-        Console.WriteLine("❌ Patient not found!");
-        return;
+            // Buscar al paciente
+            Patient? patient = Patients.FirstOrDefault(p => p.Id == idPat);
+            if (patient == null)
+            {
+                Console.WriteLine("❌ Patient not found!");
+                return;
+            }
+
+            // Buscar la mascota dentro de ese paciente
+            Pet? pet = patient.Pets.FirstOrDefault(pe =>
+                pe.Name.Equals(namePet));
+
+            if (pet == null)
+            {
+                Console.WriteLine("❌ Pet not found!");
+                return;
+            }
+
+            // Eliminar de la lista del paciente
+            patient.Pets.Remove(pet);
+
+            // También la eliminamos de la lista global de mascotas
+            Pets.Remove(pet);
+
+            Console.WriteLine($"✅ The pet {pet.Name} was successfully removed from patient {patient.Name}.");
+        }
+
+        public void ShowPetTypes()
+        {
+            Console.WriteLine("Types of registered pets:");
+            Console.WriteLine("===========================================================");
+            Console.WriteLine($"[{string.Join(", ", Pets.Select(p => p.Type).Distinct())}]"); // distinct elimina los elementos repetidos
+
+            Console.WriteLine("===========================================================");
+            Console.WriteLine("write the type of pet you want to see");
+            string typePet = Console.ReadLine() ?? "";
+
+            var petsOfType = Pets.Where(p => p.Type.Equals(typePet, StringComparison.OrdinalIgnoreCase));
+                if (!petsOfType.Any())
+                {
+                    Console.WriteLine($"No pets of type '{typePet}' found.");
+                    return;
+                }
+
+            Console.WriteLine("===========================================================");
+            Console.WriteLine($"Pets of type '{typePet}':");
+            foreach (var pet in petsOfType)
+            {
+                Console.WriteLine($"- {pet.Name} (Age: {pet.Age})");
+            }
+        }
+
     }
 
-    // Buscar la mascota dentro de ese paciente
-    Pet? pet = patient.Pets.FirstOrDefault(pe => 
-        pe.Name.Equals(namePet));
-
-    if (pet == null)
-    {
-        Console.WriteLine("❌ Pet not found!");
-        return;
-    }
-
-    // Eliminar de la lista del paciente
-    patient.Pets.Remove(pet);
-
-    // También la eliminamos de la lista global de mascotas
-    Pets.Remove(pet);
-
-    Console.WriteLine($"✅ The pet {pet.Name} was successfully removed from patient {patient.Name}.");
 }
+    
 
 
-    }
-}
       

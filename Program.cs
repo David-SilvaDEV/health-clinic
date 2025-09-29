@@ -24,7 +24,8 @@ class Program
             Console.WriteLine("[4] see patients with their pets");
             Console.WriteLine("[5] Delete Patient");
             Console.WriteLine("[6] Delete pet");
-            Console.WriteLine("[7] Exit");
+            Console.WriteLine("[7] Show types of registered pets");
+            Console.WriteLine("[-] Exit");
 
             string answer = Console.ReadLine() ?? "";
 
@@ -59,10 +60,16 @@ class Program
                     //eliminar mascota
                     patientService.DeletePet();
                     break;
+
                 case "7":
+                    //mostrar tipos de mascotas registradas
+                    patientService.ShowPetTypes();
+                    break;
+                case "8":
                     // Salir del programa
                     Console.WriteLine("Exiting...");
                     return;
+                
 
                 default:
                     Console.WriteLine("Invalid option, please try again.");
